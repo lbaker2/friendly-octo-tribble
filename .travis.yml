@@ -3,9 +3,19 @@ services:
   - docker
 
 before_install:
-  - docker build -t lbakerjs/docker-react -f Dockerfile.dev .
+  - docker build -t react-test-env -f Dockerfile.dev .
 
 language: generic
 
 script:
-  - docker run -e CI=true lbakerjs/docker-react npm run test
+  - docker run -e CI=true react-test-env npm run test
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "friendly-octo-tribble"
+  env: "FriendlyOctoTribble-env"
+  bucket_name: "elasticbeanstalk-us-east-2-693724386402"
+  bucket_path: "friendly-octo-tribble"
+  on:
+    branch: master
